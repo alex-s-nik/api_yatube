@@ -1,7 +1,8 @@
-from posts.models import Comment, Group, Post
-from posts.serializers import CommentSerializer, GroupSerializer, PostSerializer
-from django.core.exceptions import PermissionDenied
 from rest_framework import viewsets
+
+from posts.models import Comment, Group, Post
+from posts.serializers import (CommentSerializer, GroupSerializer,
+                               PostSerializer)
 
 from .mixins import EditDeleteAuthorOnlyViewSetMixin
 
