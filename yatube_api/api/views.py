@@ -1,10 +1,10 @@
-from rest_framework import viewsets
-from rest_framework.permissions import BasePermission, IsAuthenticated, IsAuthenticatedOrReadOnly, SAFE_METHODS
-
 from posts.models import Comment, Group, Post
+from rest_framework import viewsets
+from rest_framework.permissions import (SAFE_METHODS,
+                                        BasePermission,
+                                        IsAuthenticated)
 
-from .serializers import (CommentSerializer, GroupSerializer,
-                          PostSerializer)
+from .serializers import CommentSerializer, GroupSerializer, PostSerializer
 
 
 class EditDeleteOnlyAuthor(BasePermission):
@@ -22,7 +22,11 @@ class ReadOnly(BasePermission):
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [EditDeleteOnlyAuthor & IsAuthenticated]
-    queryset = Post.objects.select_related('author', 'group').prefetch_related('comments')
+    queryset = (
+        Post.objects
+        .select_related('author', 'group')
+        .prefetch_related('comments')
+    )
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
@@ -43,6 +47,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = self.kwargs.get('post_id')
         comments_queryset = Comment.objects.filter(post=post_id)
         return comments_queryset
-    
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
