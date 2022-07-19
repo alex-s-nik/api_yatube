@@ -1,10 +1,10 @@
 from rest_framework import viewsets
 
 from posts.models import Comment, Group, Post
-from posts.serializers import (CommentSerializer, GroupSerializer,
-                               PostSerializer)
 
 from .mixins import EditDeleteAuthorOnlyViewSetMixin
+from .serializers import (CommentSerializer, GroupSerializer,
+                          PostSerializer)
 
 
 class PostViewSet(EditDeleteAuthorOnlyViewSetMixin):

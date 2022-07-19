@@ -5,13 +5,22 @@ User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(
+        verbose_name='Название',
+        max_length=200)
     slug = models.SlugField(unique=True)
-    description = models.TextField()
+    description = models.TextField(
+        verbose_name='Описание'
+    )
+
+    class Meta:
+            verbose_name = 'Группа'
+            verbose_name_plural = 'Группы'
 
     def __str__(self):
         return self.title
 
+    
 
 class Post(models.Model):
     text = models.TextField()
@@ -25,12 +34,17 @@ class Post(models.Model):
         upload_to='posts/', null=True, blank=True
     )  # поле для картинки
     group = models.ForeignKey(
-        Group, on_delete=models.CASCADE,
+        Group, on_delete=models.SET_NULL,
         related_name="posts", blank=True, null=True
     )
 
+    class Meta:
+            verbose_name = 'Пост'
+            verbose_name_plural = 'Посты'
+
     def __str__(self):
         return self.text
+
 
 
 class Comment(models.Model):
@@ -44,3 +58,7 @@ class Comment(models.Model):
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True
     )
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
